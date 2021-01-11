@@ -61,13 +61,16 @@ for i in range(0,10):
         Time[i+1] = [('start',int(temp[0])),('end',int(temp[1])),chrome.find_element_by_xpath(f'//*[@id="root"]/div[2]/div[2]/div[2]/div[2]/div[{i}]/div[2]/a')]
     except:
         pass
+    
+currentTime = time.localtime().tm_hour
+if currentTime > 12:
+    currentTime = currentTime - 12
 
 if len(Time) != 0:
-    attended = False
     for i in range(0,10):
         try:
             if Time[i][0][1] < Time[i][1][1]:
-                if Time[i][0][1] <= time.localtime().tm_hour and Time[i][1][1] > time.localtime().tm_hour:
+                if Time[i][0][1] <= currentTime and Time[i][1][1] > currentTime:
                     Time[i][2].click()
                     Window_List = chrome.window_handles
                     chrome.switch_to_window(Window_List[-1])
@@ -76,7 +79,7 @@ if len(Time) != 0:
                     #chrome.find_element_by_xpath('//*[@id="zoom-ui-frame"]/div[2]/div/div[1]/div').click()
                     break
             elif Time[i][0][1] > Time[i][1][1]:
-                if Time[i][0][1] <= time.localtime().tm_hour:
+                if Time[i][0][1] <= currentTime:
                     Time[i][2].click()
                     Window_List = chrome.window_handles
                     chrome.switch_to_window(Window_List[-1])
@@ -89,7 +92,3 @@ if len(Time) != 0:
 
 else:
     print("Either there is no lecture going on currently or Lectures Are Over For Today!!!")
-
-if attended == False:
-    print("Class have not started yet.")
-
